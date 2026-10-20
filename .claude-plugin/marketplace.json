@@ -1,0 +1,18 @@
+{
+  "name": "bokeping-skills",
+  "description": "Bookkeeping review playbooks for AI assistants working in Bokeping through its MCP server.",
+  "owner": {
+    "name": "Bokeping",
+    "url": "https://bokeping.com"
+  },
+  "plugins": [
+    {
+      "name": "bokeping",
+      "source": "./",
+      "description": "Nine playbooks: intake diagnosis, QuickBooks Online migration, period-close review, 1099 readiness, bank feed review, duplicate review, bank reconciliation, bank rules, and bank account ownership check. Needs a Bokeping MCP connection.",
+      "version": "1.0.0",
+      "category": "productivity",
+      "tags": ["accounting", "bookkeeping", "mcp", "quickbooks", "1099", "reconciliation"]
+    }
+  ]
+}
