@@ -107,7 +107,7 @@ For one project only, copy them into `.claude/skills/` in that project.
 in a repository).
 
 **Claude (web and desktop):** build one ZIP per skill with
-`./scripts/package.sh`. Then go to Customize → Skills, choose **+**, then
+`bash scripts/package.sh`. Then go to Customize → Skills, choose **+**, then
 **Create skill → Upload a skill**, and upload the ZIP. Skills need code
 execution turned on under Settings → Capabilities.
 
