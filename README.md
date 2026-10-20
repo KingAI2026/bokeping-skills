@@ -1,5 +1,8 @@
 # Bokeping Skills
 
+- **Website:** [https://bokeping.com](https://bokeping.com)
+- **MCP server:** [https://app.bokeping.com/mcp](https://app.bokeping.com/mcp)
+
 Ready-made playbooks that let an AI assistant do careful bookkeeping review
 work in [Bokeping](https://bokeping.com) through the Bokeping MCP server. You
 can use them for a first look at a new client, a QuickBooks Online migration,
