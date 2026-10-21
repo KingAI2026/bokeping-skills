@@ -39,9 +39,12 @@ you found, and what you changed.
    transactions") is what lets you exclude the lines the person confirms.
    Without it you still do the whole comparison and hand over the list; the
    person excludes the lines on the Banking page. Say which case you are in
-   before you start. The tool list must include
-   `bokeping_bank_transactions_exclude`; if it does not, the server is older
-   than this playbook (2026-10-16) — hand over the list only.
+   before you start. A missing `bokeping_bank_transactions_exclude` usually
+   means `bank_review:write` was not granted — tools are listed only for the
+   scopes the grant holds; `bokeping_whoami` shows it under
+   `optional_write_scopes` then. Only when whoami lists the scope as granted
+   and the tool is still absent is the server older than this playbook
+   (2026-10-16). Either way, hand over the list only.
 3. If `company.detail_sharing_enabled` is false you cannot compare payees,
    descriptions or amounts: say so and stop.
 

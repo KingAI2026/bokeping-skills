@@ -42,8 +42,11 @@ it would catch, and what you saved.
    queue; `accounts:read` lets you name accounts; `bank_rules:write` ("Save
    bank rules") lets you save one. Without `bank_rules:write`, write the
    rule out exactly as the person would type it on the Rules page and stop
-   there. The tool list must include `bokeping_bank_rule_create`; if it does
-   not, the server is older than this playbook (2026-10-16).
+   there. A missing `bokeping_bank_rule_create` usually means that scope was
+   not granted — tools are listed only for the scopes the grant holds;
+   `bokeping_whoami` shows it under `optional_write_scopes` then. Only when
+   whoami lists the scope as granted and the tool is still absent is the
+   server older than this playbook (2026-10-16).
 
 ## 1. Read what exists
 

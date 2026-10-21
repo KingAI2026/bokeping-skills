@@ -52,7 +52,7 @@ The playbooks share a few rules; a change must keep them:
 
 ```bash
 node scripts/validate.mjs
-bash scripts/package.sh        # optional: builds dist/<skill>.zip
+./scripts/package.sh        # optional: builds dist/<skill>.zip
 ```
 
 If you can, run the playbook against a Bokeping company you own (a test or

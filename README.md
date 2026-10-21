@@ -7,7 +7,8 @@ Ready-made playbooks that let an AI assistant do careful bookkeeping review
 work in [Bokeping](https://bokeping.com) through the Bokeping MCP server. You
 can use them for a first look at a new client, a QuickBooks Online migration,
 a month-end close review, 1099 readiness, the bank feed, duplicates,
-reconciliations, bank rules, and checking which bank feeds which account.
+reconciliations, bank rules, checking which bank feeds which account, and
+cleaning up the books before a close, a review or a hand-over.
 
 Each skill is one `SKILL.md` file. It tells the assistant what to ask you,
 what to check and in which order, what report to hand back, and what it must
@@ -32,6 +33,7 @@ Code, Codex and other apps that load skills.
 | [`bokeping-bank-reconciliation`](skills/bokeping-bank-reconciliation/SKILL.md) | You have a statement to reconcile against | A line-by-line comparison, the difference explained, and a reconciliation report | `banking:read` | `reconciliation:write`: starts, ticks and completes a reconciliation, and posts only an adjustment you explained. It completes only at a zero difference |
 | [`bokeping-categorization-rules`](skills/bokeping-categorization-rules/SKILL.md) | A payee should be handled the same way every time | The rules the company has, and a new rule previewed before it is saved | `banking:read` | `bank_rules:write`: saves rules that only suggest. They never post a line on their own |
 | [`bokeping-account-ownership-check`](skills/bokeping-account-ownership-check/SKILL.md) | Balances look doubled or short, or a bank was reconnected | Which connection feeds which books account, and what looks wrong | `banking:read` | Nothing. It only checks |
+| [`bokeping-books-cleanup`](skills/bokeping-books-cleanup/SKILL.md) | You want the books tidy before a close, a review or a hand-over | A cleanup list with the evidence for each item and who acts on it: bank lines waiting or excluded, balances parked in suspense, unapplied payments and credits, drafts and prepared entries, reconciliation and lock gaps | `company:read`, `accounts:read`, `banking:read` | `bank_review:write`: excludes or restores only the bank lines you named, saves a category draft, or matches a transfer already recorded. Nothing is posted |
 
 Every permission that changes the books starts unticked on Bokeping's
 approval page. Even with one ticked, the assistant shows you each change and
@@ -110,7 +112,7 @@ For one project only, copy them into `.claude/skills/` in that project.
 in a repository).
 
 **Claude (web and desktop):** build one ZIP per skill with
-`bash scripts/package.sh`. Then go to Customize → Skills, choose **+**, then
+`./scripts/package.sh`. Then go to Customize → Skills, choose **+**, then
 **Create skill → Upload a skill**, and upload the ZIP. Skills need code
 execution turned on under Settings → Capabilities.
 

@@ -82,6 +82,7 @@ they also finish the column mapping on the page):
 | Vendors | `/contacts/vendors/import` |
 | Products and services | `/inventory/items/import` |
 | Journal | `/accounting/manual-journals/import` |
+| Bank history already categorized (optional, see below) | the bank account's page → More → **Import posted history** (`/banking/accounts/:id/import/posted`) |
 
 **Before every write, check the company again.** A switch earlier in the
 conversation, or a restart of the Bokeping MCP server, changes which company
@@ -103,6 +104,14 @@ With `imports:write`, for each file (`bokeping_imports_list` gives the
    on `sourceTransactionType` for a transaction type they do not want. Say
    plainly what leaving rows out does: the books will differ from QBO's by
    exactly those transactions. Never add a filter they did not ask for.
+5. On a posted bank history (an account's **Import posted history** upload):
+   the Category column maps to `accountId` and the Amount (or Deposit /
+   Withdrawal) to `amount` (or `deposit` / `withdrawal`), both in group
+   `lines`; From/To to `contactId` in `lines`; a `Split group` column to
+   `splitGroup`. `bokeping_import_settings_set` with
+   `unmatched_contact: "drop"` only if the person wants lines whose From/To
+   matches no contact imported without one — the default refuses the whole
+   file, and a name matching two contacts always does.
 
 Mapping rules that matter, whoever maps:
 
@@ -170,11 +179,23 @@ first commit, and list per file:
   file holds: the source's internal ids, edit and audit history, who
   entered what, attachments, approvals, bank-feed and reconciliation state,
   and links the file does not spell out.
-- **Bank lines** moved this way (an export from
+- **Bank lines** moved as a statement (an export from
   `bokeping_bank_transactions_export_prepare` or the bank's own CSV,
-  imported into another account) arrive as NEW lines waiting for review:
-  their categorization, matching, reconciliation and posting do not come
-  with them. Importing bank lines as already posted is not offered.
+  imported on a bank account's Import page) arrive as NEW lines waiting for
+  review: their categorization, matching, reconciliation and posting do not
+  come with them. A history that already carries its category goes through
+  the account's **Import posted history** page instead (since 2026-10-20):
+  every row is posted on commit, a transfer or card payment the other
+  account already recorded is matched rather than posted again, and one bad
+  row — a category that is missing, ambiguous or of the wrong kind, a
+  From/To nobody matches — refuses the whole file. Use it only for lines
+  the journal does not carry (a period after the cutover date, or a company
+  migrated without the journal): the same period imported both ways is
+  counted twice.
+  Connect the bank feed AFTER this import, with the connect page's **Start
+  tracking date** set to the day after the imported history — the feed's
+  first sync collapses a line onto an imported one only when date, amount
+  and merchant text agree exactly; a differently spelled one lands in review.
 
 ## 4. Preview, then the person commits in order
 
@@ -299,13 +320,25 @@ One short report:
   waiting for review, without their categorization, matching or
   reconciliation, and that the originals stay where they are; do not
   prepare the import until they choose knowing that.
+- **Normal — bank history after the cutover.** The journal ran to
+  2025-12-31; January's checking lines are already categorized in QBO. The
+  person uploads that export on the account's Import posted history page;
+  the preview names every row's verdict ("Will post as expense", "Will
+  match transfer #12 on Savings"); one category is spelled differently from
+  the account list, so the whole file is refused until it is fixed; then it
+  imports in one commit and `bokeping_import_get` shows `committed` with
+  `counts.failed` 0.
 
 ## Version
 
+- Version 3 (2026-10-20): the posted bank-history import (the account's
+  Import posted history page, `unmatched_contact`), and what a statement
+  import carries against what a posted one does.
 - Version 2 (2026-10-16): the missing-and-ambiguous table, what an import
   carries, the before-and-after check, failure handling, examples.
   Maintainer: Bokeping MCP.
-- Works with: Bokeping MCP from 2026-10-10 (`imports:write` tools) and
-  2026-10-16 for the bank export (`bokeping_bank_transactions_export_prepare`).
+- Works with: Bokeping MCP from 2026-10-10 (`imports:write` tools),
+  2026-10-16 for the bank export (`bokeping_bank_transactions_export_prepare`)
+  and 2026-10-20 for the posted bank-history import.
   Scopes: `company:read`, `imports:read`, `accounts:read` required;
   `imports:write`, `reports:read`, `files:read` optional.

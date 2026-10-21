@@ -175,6 +175,9 @@ questions for the client (old balances, large journals, unusual accounts).
   bank rules playbook (`Bokeping: Keep the company's bank rules`).
 - Balances that look doubled or short, or a bank reconnected: the account
   check (`Bokeping: Check which bank feeds which account`).
+- Books to tidy before a close, a review or a hand-over — lines waiting,
+  parked balances, unapplied money, drafts, reconciliation gaps: the cleanup
+  playbook (`Bokeping: Clean up a company's books`).
 - Settings, vendor tax details and the close itself are done by a person on
   the web; say which page.
 
